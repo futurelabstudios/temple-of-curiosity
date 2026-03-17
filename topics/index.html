@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temple of Curiosity | Topics</title>
+    <meta
+      name="description"
+      content="Choose a topic and generate mixed-model AI quiz sets."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-view="topics">
+    <div class="site-frame">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark">TC</span>
+          <span class="brand-text">
+            <strong>Temple of Curiosity</strong>
+            <small>Route 2: topic-led mixed model</small>
+          </span>
+        </a>
+
+        <nav class="site-nav">
+          <a href="/">Home</a>
+          <a href="/quizmasters/">Quiz Masters</a>
+          <a href="/topics/">Topics</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="page-hero">
+          <p class="eyebrow">Route 2</p>
+          <h1>Choose a topic</h1>
+          <p class="hero-copy">
+            Enter through a subject instead of one person. The engine blends
+            trained tastes into a mixed model and generates a cleaner topic-led
+            quiz set.
+          </p>
+        </section>
+
+        <section class="route-layout">
+          <aside class="control-panel">
+            <p class="panel-label">Generator</p>
+
+            <label>
+              Topic
+              <select id="topic-select"></select>
+            </label>
+
+            <label>
+              Format
+              <select id="topic-format-select">
+                <option value="text">Text</option>
+                <option value="visual">Visual</option>
+                <option value="hybrid">Hybrid</option>
+              </select>
+            </label>
+
+            <label>
+              Difficulty
+              <input
+                id="topic-difficulty-range"
+                type="range"
+                min="1"
+                max="5"
+                value="3"
+              />
+            </label>
+
+            <p class="control-note" id="topic-difficulty-note"></p>
+
+            <div class="action-row">
+              <button class="button button-primary" id="generate-topic-set">
+                Generate set
+              </button>
+              <button class="button button-secondary" id="simulate-topic-win">
+                Simulate win
+              </button>
+            </div>
+
+            <p class="helper-text">
+              This route uses a mixed editorial model and splits creator
+              royalties across the contributing quizmaster styles.
+            </p>
+          </aside>
+
+          <div class="preview-panel">
+            <div class="preview-head">
+              <p class="preview-kicker">Live demo</p>
+              <h2 id="topic-session-title"></h2>
+              <p id="topic-session-summary"></p>
+            </div>
+
+            <div class="summary-tags" id="topic-summary-tags"></div>
+
+            <div class="summary-grid">
+              <article class="summary-card">
+                <span>Model blend</span>
+                <strong id="topic-blend-card"></strong>
+              </article>
+              <article class="summary-card">
+                <span>Royalty split</span>
+                <strong id="topic-split-card"></strong>
+              </article>
+              <article class="summary-card">
+                <span>Prize credits</span>
+                <strong id="topic-reward-card"></strong>
+              </article>
+              <article class="summary-card">
+                <span>Current wallet</span>
+                <strong id="topic-credits-card"></strong>
+              </article>
+            </div>
+
+            <div class="split-grid" id="topic-split-grid"></div>
+
+            <div class="question-list" id="topic-question-list"></div>
+
+            <p class="footer-note">
+              Good performance adds user credits for the next set. Every full
+              session also credits the blended creators behind this topic model.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
