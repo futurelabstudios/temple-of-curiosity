@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temple of Curiosity | Immersive Themes</title>
+    <meta
+      name="description"
+      content="Immersive mobile-first theme-led quizzing with credits, reveals, and creator royalties."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-view="themes">
+    <div class="app-backdrop"></div>
+    <div class="site-shell route-page-shell">
+      <header class="app-header">
+        <a class="brand" href="/">
+          <span class="brand-mark">TC</span>
+          <span class="brand-copy">
+            <strong>Temple of Curiosity</strong>
+            <small>Route 2: immersive themes</small>
+          </span>
+        </a>
+
+        <div class="top-links">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/host/">Host studio</a>
+          <span class="price-chip">INR 199 / month</span>
+        </div>
+      </header>
+
+      <section class="route-intro">
+        <p class="route-kicker">Play by theme</p>
+        <h1>Thumb-first, immersive, dangerously repeatable.</h1>
+        <p>
+          This route is built like a mobile product, not a web page. Enter a
+          theme room, play one card at a time, reveal only when ready, and let
+          credits and streaks pull you deeper into the next room.
+        </p>
+      </section>
+
+      <div class="route-layout">
+        <aside class="control-panel">
+          <div>
+            <p class="panel-title">Theme room</p>
+            <div class="theme-chip-row" id="theme-chip-row"></div>
+          </div>
+
+          <label>
+            Theme deck
+            <select id="theme-deck-select"></select>
+          </label>
+
+          <label>
+            Difficulty
+            <input
+              id="theme-difficulty-range"
+              type="range"
+              min="1"
+              max="5"
+              value="3"
+            />
+          </label>
+
+          <p class="control-note" id="theme-difficulty-note"></p>
+
+          <div class="button-row">
+            <button class="button button-primary" id="toggle-immersive">
+              Toggle immersive mode
+            </button>
+            <button class="button button-secondary" id="shuffle-theme-deck">
+              Shuffle deck
+            </button>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-secondary" id="reveal-answer">
+              Reveal answer
+            </button>
+            <button class="button button-secondary" id="next-question">
+              Next card
+            </button>
+          </div>
+
+          <div class="metric-grid">
+            <article>
+              <span>Wallet</span>
+              <strong id="theme-wallet-card"></strong>
+            </article>
+            <article>
+              <span>Protection</span>
+              <strong id="theme-shield-card"></strong>
+            </article>
+          </div>
+
+          <p class="helper-text" id="theme-note-card"></p>
+        </aside>
+
+        <section class="immersive-column">
+          <article
+            class="immersive-stage protected"
+            data-watermark="Temple of Curiosity / member-199"
+          >
+            <div class="stage-head">
+              <div>
+                <p class="feed-label">Immersive card</p>
+                <h2 id="stage-theme"></h2>
+              </div>
+              <div class="stage-meta">
+                <span class="status-chip" id="stage-question-label"></span>
+                <span class="status-chip" id="stage-streak"></span>
+                <span class="status-chip" id="stage-credits"></span>
+              </div>
+            </div>
+
+            <div class="stage-question">
+              <div class="stage-copy">
+                <h3 id="stage-question-title"></h3>
+                <p id="stage-question-prompt"></p>
+              </div>
+            </div>
+
+            <div class="answer-panel" id="answer-panel" hidden>
+              <div class="answer-head">
+                <span class="question-label">Reveal</span>
+                <span class="status-chip">Human taste layer</span>
+              </div>
+              <strong id="answer-text"></strong>
+              <p id="answer-why"></p>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <nav class="bottom-tabs">
+        <a href="/">Home</a>
+        <a href="/host/">Host</a>
+        <a class="is-active" href="/themes/">Themes</a>
+      </nav>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

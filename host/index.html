@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temple of Curiosity | Host Studio</title>
+    <meta
+      name="description"
+      content="Creator studio for hosting quizzes and extending quizmaster taste with AI plus human review."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-view="host">
+    <div class="app-backdrop"></div>
+    <div class="site-shell route-page-shell">
+      <header class="app-header">
+        <a class="brand" href="/">
+          <span class="brand-mark">TC</span>
+          <span class="brand-copy">
+            <strong>Temple of Curiosity</strong>
+            <small>Route 1: host studio</small>
+          </span>
+        </a>
+
+        <div class="top-links">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/themes/">Play by theme</a>
+          <span class="price-chip">INR 199 / month</span>
+        </div>
+      </header>
+
+      <section class="route-intro">
+        <p class="route-kicker">Host your own quiz</p>
+        <h1>AI extends the taste. Humans keep the standard.</h1>
+        <p>
+          This route is for quiz creators. Seed the system with questions you
+          love, let AI draft more in the same lane, then edit and publish the
+          final room yourself. The current demo uses Shabbir's long-form
+          question logic as the taste engine.
+        </p>
+      </section>
+
+      <div class="route-layout">
+        <aside class="control-panel">
+          <div>
+            <p class="panel-title">Taste map</p>
+            <div class="pill-row" id="host-traits"></div>
+          </div>
+
+          <div>
+            <p class="panel-title">Seed questions</p>
+            <div class="seed-list" id="seed-list"></div>
+          </div>
+
+          <label>
+            Draft theme
+            <select id="host-theme-select"></select>
+          </label>
+
+          <div class="button-stack">
+            <button class="button button-primary" id="generate-host-drafts">
+              Generate new drafts
+            </button>
+            <button class="button button-secondary" id="simulate-host-payout">
+              Simulate more completions
+            </button>
+          </div>
+
+          <p class="helper-text">
+            Demo note: AI drafts are suggestions. A creator still approves,
+            trims, fact-checks, and publishes the live question set.
+          </p>
+        </aside>
+
+        <section class="feed-column">
+          <div class="summary-grid">
+            <article class="summary-card accent-card">
+              <span>Loaded demo</span>
+              <strong id="host-summary-label"></strong>
+            </article>
+            <article class="summary-card">
+              <span>Membership</span>
+              <strong id="host-price-card"></strong>
+            </article>
+            <article class="summary-card">
+              <span>Creator economics</span>
+              <strong id="host-payout-card"></strong>
+            </article>
+          </div>
+
+          <div class="app-rail">
+            <span class="shield-tag">Copy shield</span>
+            <strong id="host-shield-card"></strong>
+          </div>
+
+          <div class="draft-feed" id="host-draft-feed"></div>
+        </section>
+      </div>
+
+      <nav class="bottom-tabs">
+        <a href="/">Home</a>
+        <a class="is-active" href="/host/">Host</a>
+        <a href="/themes/">Themes</a>
+      </nav>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

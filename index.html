@@ -6,96 +6,121 @@
     <title>Temple of Curiosity</title>
     <meta
       name="description"
-      content="Temple of Curiosity is a premium AI quizzing platform with two paths: quizmaster-trained sets and mixed-model topic sets."
+      content="Temple of Curiosity is a mobile-first AI quizzing platform with creator-hosted quizzes and immersive theme-led play."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body data-view="home">
-    <div class="site-frame">
-      <header class="site-header">
+    <div class="app-backdrop"></div>
+    <div class="site-shell">
+      <header class="app-header">
         <a class="brand" href="/">
           <span class="brand-mark">TC</span>
-          <span class="brand-text">
+          <span class="brand-copy">
             <strong>Temple of Curiosity</strong>
-            <small>AI quizzing with creator royalties</small>
+            <small>AI x human intelligence</small>
           </span>
         </a>
 
-        <nav class="site-nav">
-          <a href="/quizmasters/">Quiz Masters</a>
-          <a href="/topics/">Topics</a>
-        </nav>
+        <div class="header-actions">
+          <span class="price-chip">INR 199 / month</span>
+        </div>
       </header>
 
-      <main>
-        <section class="page-hero">
-          <p class="eyebrow">Two ways in</p>
+      <main class="home-layout">
+        <section class="hero-column">
+          <p class="eyebrow">Mobile-first quiz addiction</p>
           <h1>Temple of Curiosity</h1>
           <p class="hero-copy">
-            A premium quizzing platform where people either enter through a
-            specific quizmaster's taste or through a topic-first mixed model.
-            Every session feeds royalties back to creators, and every win adds
-            credits for the next game.
+            A feed-native quizzing platform inspired by mobile habit loops. One
+            route is for creators who host and refine their own quiz worlds.
+            The other is for players who enter immersive theme rooms and keep
+            playing through credits, streaks, and unlocks.
           </p>
+
+          <div class="pill-row">
+            <span class="pill">Host-led rooms</span>
+            <span class="pill">Immersive mode</span>
+            <span class="pill">AI taste engine</span>
+            <span class="pill">Royalty loop</span>
+          </div>
+
+          <div class="phone-preview">
+            <div class="story-row">
+              <span>Food history</span>
+              <span>India brands</span>
+              <span>Technology</span>
+            </div>
+
+            <article class="feed-card">
+              <p class="feed-label">Question feed</p>
+              <h2>One card at a time. One reveal at a time.</h2>
+              <p>
+                Feed-native quizzing, full-screen immersion, answer reveals,
+                and credits that roll directly into the next room.
+              </p>
+              <div class="feed-meta">
+                <span>Shabbir taste demo live</span>
+                <span>Copy shield on</span>
+              </div>
+            </article>
+          </div>
         </section>
 
-        <section class="route-grid">
-          <article class="route-card">
-            <p class="card-label">Route 1</p>
-            <h2>Choose a quiz master</h2>
+        <section class="route-column">
+          <a class="route-card route-card-primary" href="/host/">
+            <span class="route-number">01</span>
+            <h2>Host your own quiz</h2>
             <p>
-              Pick a curator whose style is already known. The model keeps that
-              signature taste, references approved archive patterns, and
-              generates new questions in the same thematic lane.
+              Creators seed the model with questions they love. AI extends the
+              taste. Humans keep the last editorial word before a room goes
+              live.
             </p>
-            <div class="mini-list">
-              <span>Joy Bhattacharya: General Quiz, Science, Technology</span>
-              <span>Shabbir Haider: Technology, Sci-Fi</span>
-              <span>Sarbhajit Mitra: History, Arts</span>
+            <div class="route-meta">
+              <span>Shabbir seed demo</span>
+              <span>Creator royalties</span>
             </div>
-            <a class="button button-primary" href="/quizmasters/"
-              >Open quizmaster route</a
-            >
-          </article>
+          </a>
 
-          <article class="route-card">
-            <p class="card-label">Route 2</p>
-            <h2>Choose a topic</h2>
+          <a class="route-card" href="/themes/">
+            <span class="route-number">02</span>
+            <h2>Play by theme</h2>
             <p>
-              Enter through a subject instead. The platform blends multiple
-              trained tastes into a mixed model and generates a clean, focused
-              session around the chosen area.
+              Players enter theme rooms built for the thumb: vertical cards,
+              immersive play, fast reveals, and repeatable game loops.
             </p>
-            <div class="mini-list">
-              <span>Technology blends Joy and Shabbir</span>
-              <span>History and Arts lean into Sarbhajit</span>
-              <span>Wins become credits for the next room</span>
+            <div class="route-meta">
+              <span>Immersive mode</span>
+              <span>Credits unlock next rooms</span>
             </div>
-            <a class="button button-primary" href="/topics/"
-              >Open topic route</a
-            >
-          </article>
-        </section>
+          </a>
 
-        <section class="economy-band">
-          <article class="economy-card">
-            <span>Subscription</span>
-            <strong>Players access premium sets with one membership.</strong>
-          </article>
-          <article class="economy-card">
-            <span>Royalties</span>
-            <strong>Each session routes creator payout by usage.</strong>
-          </article>
-          <article class="economy-card">
-            <span>Credits</span>
-            <strong>Good performance unlocks the next games faster.</strong>
-          </article>
+          <section class="commerce-stack">
+            <article class="commerce-card">
+              <span>Initial creators</span>
+              <strong
+                >Joy Bhattacharya, Debkumar Mitra, Sarbajit Mitra, Shabbir
+                Haider, Robin Dey, Kunal Mandal</strong
+              >
+            </article>
+            <article class="commerce-card">
+              <span>Pricing</span>
+              <strong>INR 199/month for premium play and creator rooms.</strong>
+            </article>
+            <article class="commerce-card">
+              <span>Protection</span>
+              <strong
+                >Watermarking, no select, one-card feeds, and blur on app
+                switch.</strong
+              >
+            </article>
+          </section>
         </section>
       </main>
     </div>

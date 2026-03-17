@@ -1,11 +1,12 @@
 # Temple of Curiosity
 
-Static MVP for an AI-powered quizzing platform with two user paths:
+Static MVP for a mobile-first AI-powered quizzing platform with two user paths:
 
-- `/quizmasters/`: choose a quiz master and generate style-led sets
-- `/topics/`: choose a topic and generate mixed-model sets
+- `/host/`: creator studio for hosting quizzes and extending quizmaster taste
+- `/themes/`: immersive full-screen theme-led play
 
-Both demos include royalty and credit progression logic.
+The prototype includes mobile-first interaction patterns, an INR 199 pricing
+model, credits, royalties, and best-effort copy-shield behavior.
 
 ## Run locally
 
@@ -16,8 +17,8 @@ python3 -m http.server 8000
 Open:
 
 - `http://localhost:8000/`
-- `http://localhost:8000/quizmasters/`
-- `http://localhost:8000/topics/`
+- `http://localhost:8000/host/`
+- `http://localhost:8000/themes/`
 
 ## Deploy
 

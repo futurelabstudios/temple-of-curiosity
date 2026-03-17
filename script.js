@@ -1,514 +1,494 @@
-const difficultyLabels = {
-  1: "Accessible",
-  2: "Warm-up",
-  3: "Balanced",
-  4: "Tournament",
-  5: "Elite",
-};
-
-const difficultyNotes = {
-  1: "Quick entry points and broad solvability.",
-  2: "Still comfortable, with sharper clue framing.",
-  3: "Balanced ladders and stronger thematic cohesion.",
-  4: "Harder turns, thinner clue margins, better payoff.",
-  5: "Sparse clues, prestige feel, serious-room difficulty.",
-};
-
-const formatLabels = {
-  text: "Text",
-  visual: "Visual",
-  hybrid: "Hybrid",
-};
-
-const quizMasters = {
-  joy: {
-    name: "Joy Bhattacharya",
-    domains: ["General Quiz", "Science", "Technology"],
-    style:
-      "Wide-angle general quizzing with sharp pivots, familiar hooks, and polished difficulty control.",
-    royaltyBase: 0.94,
-    focuses: {
-      general_quiz: {
-        label: "General Quiz",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "Start with a very familiar public image, then pivot to a lesser-known scientific or literary footnote that changes the answer completely.",
-            mode: "Approved archive pattern",
-          },
-          {
-            title: "Archive echo",
-            prompt:
-              "Use a cricket or cinema hook as the opening clue, but resolve the question through a wider cultural or political connection.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "Identify the Indian city from a sequence that moves from a radio jingle to a historic institution and finally to a Nobel-linked anecdote.",
-          "A consumer brand mascot, a Latin motto, and a failed expedition all point to one answer. Name it.",
-          "Three clues seem unrelated: a museum wing, a scoreboard phrase, and a postage stamp. Find the hidden common link.",
-          "A celebrity quote is only the entry point. The real answer is the scientist, book, or invention behind the quote's afterlife.",
-        ],
+const hostThemes = {
+  food_history: {
+    label: "Food history",
+    drafts: [
+      {
+        title: "AI draft: spice after empire",
+        prompt:
+          "A souring technique born in one coast reached another court by accident, carried first by sailors and then by traders who had no intention of changing Indian food. Local cooks stripped away its original identity, attached it to a meat better loved at home, and turned a maritime preservation trick into a festive dish. Name the imported technique, and name the Indian dish it quietly became.",
+        status: "Needs human edit",
       },
-      science: {
-        label: "Science",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "Open with a clean lab observation, delay the jargon, and let the answer land through a second-order implication rather than the first clue.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "Infer the scientific principle from a notebook entry that preserves the anomaly and the conclusion, but removes the theory name.",
-          "A familiar household effect leads to a paradox and then to the person who resolved it. Name both the person and the idea.",
-          "Move from a satellite image to a molecule and identify the phenomenon that links both scales.",
-          "A final clue names a mistaken public belief. Give the actual law or mechanism it obscures.",
-        ],
+      {
+        title: "AI draft: sweet made by absence",
+        prompt:
+          "A dessert now treated as native began as a workaround for something missing rather than something present. The cook had no oven, no mould, and no patience for European technique, so he changed temperature, texture, and shape until the original idea vanished. Today the final product sounds more ancient than the thing it was born from. Identify both the borrowed starting point and the Indian sweet that survived.",
+        status: "Needs human edit",
       },
-      technology: {
-        label: "Technology",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "Use a very current device or platform as bait, but make the solution depend on older infrastructure or protocol history.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "A failed handshake, a familiar port number, and one acquisition trail point to the same protocol story. Identify it.",
-          "Three interface screenshots from different decades preserve one design habit. Name the habit.",
-          "Separate a true computing milestone from a myth that keeps repeating in startup culture.",
-          "Begin with a game console clue and end with the invisible network layer that made its most famous feature possible.",
-        ],
+      {
+        title: "AI draft: virtue at the table",
+        prompt:
+          "This preparation was once named after labour, not taste. The Indian version that replaced it came to be known not by ingredient, geography, or dynasty, but by a moral quality - a word that signalled restraint, comfort, and suitability for a fasting body. Name the older dish and the quality that renamed it in the subcontinent.",
+        status: "Ready for host polish",
       },
-    },
-  },
-  shabbir: {
-    name: "Shabbir Haider",
-    domains: ["Technology", "Sci-Fi"],
-    style:
-      "Tighter clue engineering, modern references, and sharper answer validation with a digital-first pulse.",
-    royaltyBase: 0.87,
-    focuses: {
-      technology: {
-        label: "Technology",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "A compact clue path uses one interface detail, one standards clue, and one product-history marker to close cleanly on the answer.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "A browser error code, a standards body, and an e-commerce founder connect to one technology timeline. Name the key innovation.",
-          "Find the protocol hidden in a clue set built from authentication flow, token expiry, and a harmless-looking redirect.",
-          "Use a chip fabrication term, a smartphone launch year, and a benchmark myth to identify the real milestone.",
-          "The prompt starts with cloud pricing but the answer is an older piece of infrastructure logic. What is it?",
-        ],
-      },
-      sci_fi: {
-        label: "Sci-Fi",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "Build from one high-recognition franchise detail, then slide into publishing history or speculative concepts before the reveal.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "A spaceship class, a magazine cover, and a robotics law all trace back to one sci-fi lineage. Name it.",
-          "Separate a cyberpunk visual cliche from the novel, writer, or concept that actually introduced the lasting idea.",
-          "A moon, a corporate logo, and a philosophical puzzle point toward one franchise or text. Identify it.",
-          "A futuristic city image is only the surface clue. The real answer is the term for the anxiety that city encodes.",
-        ],
-      },
-    },
-  },
-  sarbhajit: {
-    name: "Sarbhajit Mitra",
-    domains: ["History", "Arts"],
-    style:
-      "History and arts through cultural texture, elegant context, and well-curated visual or archival framing.",
-    royaltyBase: 0.91,
-    focuses: {
-      history: {
-        label: "History",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "Let the question begin with material culture or an image detail, then widen toward the event, ruler, or movement behind it.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "A coin, a court painting, and a reform decree all belong to one historical figure. Identify the figure.",
-          "Arrange a short chronology of anti-colonial moments and then name the hidden ideological thread between them.",
-          "A city gate, a treaty table, and a textile route all point to the same century-turning shift. What is it?",
-          "The image clue suggests architecture, but the answer is the diplomatic event the structure came to symbolize.",
-        ],
-      },
-      arts: {
-        label: "Arts",
-        archive: [
-          {
-            title: "Archive echo",
-            prompt:
-              "Open visually, but reward the player who can connect aesthetic movement, period context, and the creator's lesser-known work.",
-            mode: "Approved archive pattern",
-          },
-        ],
-        generated: [
-          "A film still, a painting detail, and one line of verse connect through a movement. Name the movement and the hidden artist.",
-          "A costume silhouette, a city rhythm, and a theatre program point to one performance tradition. Identify it.",
-          "One gallery caption is invented. Spot it through tone, period vocabulary, and curatorial phrasing.",
-          "The prompt begins with a color field but ends with a political context. Name the artist whose work bridges both.",
-        ],
-      },
-    },
-  },
-};
-
-const topicModels = {
-  general_quiz: {
-    label: "General Quiz",
-    blend: ["Joy Bhattacharya", "Sarbhajit Mitra"],
-    royaltySplit: "55% Joy, 45% Sarbhajit",
-    prompts: [
-      "A railway slogan, a film poster, and a science prize all point to one answer. Name it.",
-      "A public statue clue hides a literary connection and a later political reference. Join them correctly.",
-      "The opening clue sounds like sport, but the real answer is a city institution with cultural reach.",
-      "Use three seemingly unrelated Indian references to find the one person who links them all.",
     ],
   },
-  science: {
-    label: "Science",
-    blend: ["Joy Bhattacharya", "Shabbir Haider"],
-    royaltySplit: "52% Joy, 48% Shabbir",
-    prompts: [
-      "A lab anomaly, a public misconception, and one elegant law all resolve to the same concept. Identify it.",
-      "Move from a household effect to a space-science implication without changing the underlying principle.",
-      "A scientist's discarded note becomes the entry point to a much larger discovery. Name the discovery.",
-      "The closing clue is a failed popular analogy. Give the actual mechanism it tries to simplify.",
+  india_brands: {
+    label: "India brands",
+    drafts: [
+      {
+        title: "AI draft: a foreign name that turned native",
+        prompt:
+          "A company arrived with manufacturing ambition but stayed because it understood aspiration faster than policy understood modern retail. Its early Indian footprint was not sold as glamour or luxury at all; it was sold as hygiene, reliability, and entry into the respectable middle class. So native did the name become that people forgot the passport attached to it. Which company is this, and what category did it naturalize in India?",
+        status: "Needs human edit",
+      },
+      {
+        title: "AI draft: the rebrand that government forced",
+        prompt:
+          "The original launch plan was global, sleek, and slightly tone-deaf to local politics. Then a late intervention from the state rewrote the front label overnight. The forced Indianized name did not weaken the product - it made the brand legible to millions who would have ignored the foreign original. Identify the brand and explain why the new label was actually stronger in India.",
+        status: "Ready for host polish",
+      },
+      {
+        title: "AI draft: township before product",
+        prompt:
+          "The company did not merely set up a factory. It imported technicians, designed worker housing, planned a hospital, and built a sports ground before the Indian market even knew how long the brand would last. The strategy was not just industrial - it was civic. Name the company and the township logic behind the move.",
+        status: "Needs answer check",
+      },
     ],
   },
   technology: {
     label: "Technology",
-    blend: ["Joy Bhattacharya", "Shabbir Haider"],
-    royaltySplit: "45% Joy, 55% Shabbir",
-    prompts: [
-      "A mobile UI habit, a networking standard, and a cloud acronym all hide the same systems story.",
-      "The clue opens with a startup buzzword, but the answer is an older architecture decision that still shapes the web.",
-      "A software crash report, a chip term, and a game console feature point to one technology milestone.",
-      "Name the protocol, product, or invention hiding behind a very ordinary user action.",
-    ],
-  },
-  history: {
-    label: "History",
-    blend: ["Sarbhajit Mitra", "Joy Bhattacharya"],
-    royaltySplit: "70% Sarbhajit, 30% Joy",
-    prompts: [
-      "A mint mark, a diplomatic phrase, and a traveler's sketch belong to one historical transition. Identify it.",
-      "Arrange a short chronology and then extract the underlying imperial logic shared across the sequence.",
-      "An urban landmark is only the visible clue. The answer is the event that changed its meaning.",
-      "A memorial, a port, and a line from a speech reveal the same era-defining shift.",
-    ],
-  },
-  arts: {
-    label: "Arts",
-    blend: ["Sarbhajit Mitra", "Joy Bhattacharya"],
-    royaltySplit: "68% Sarbhajit, 32% Joy",
-    prompts: [
-      "A stage costume, a painted hand, and a single lyric all point to one aesthetic movement.",
-      "The visual clue suggests cinema, but the answer is the painter or poet whose influence shaped the scene.",
-      "One caption is a trap. Read tone and period texture to identify the fake.",
-      "A city neighborhood, a performance tradition, and a poster design point to the same cultural network.",
+    drafts: [
+      {
+        title: "AI draft: product on the surface, protocol underneath",
+        prompt:
+          "What looks like a question about a very current device is actually a question about an older invisible agreement that lets machines trust each other at scale. The consumer-facing clue is there only to bait recognition. The real answer sits several layers lower, in the protocol stack where legitimacy is negotiated. Identify the protocol or standard.",
+        status: "Ready for host polish",
+      },
+      {
+        title: "AI draft: the error that hides an empire",
+        prompt:
+          "A user sees only a small failure message. But behind it lies a history of browser wars, security theatre, and one infrastructure choice that became so normal people forgot it was ever invented. Start from the error and name the deeper technology milestone it points to.",
+        status: "Needs human edit",
+      },
+      {
+        title: "AI draft: benchmark, myth, hardware",
+        prompt:
+          "Three clues seem to describe speed, but only one actually does. The second is a marketing story. The third is a fabrication detail hidden from everyday users but decisive to the answer. Sort myth from mechanism and identify the real technical breakthrough.",
+        status: "Needs human edit",
+      },
     ],
   },
   sci_fi: {
     label: "Sci-Fi",
-    blend: ["Shabbir Haider", "Joy Bhattacharya"],
-    royaltySplit: "72% Shabbir, 28% Joy",
-    prompts: [
-      "A magazine issue, a robot law, and a moon colony all point to one sci-fi inheritance line.",
-      "The clue looks like film trivia, but the answer is the speculative idea behind the image.",
-      "Separate a franchise surface detail from the deeper philosophical problem it popularized.",
-      "A corporate future, a neon skyline, and a cautionary essay all hide the same core anxiety.",
+    drafts: [
+      {
+        title: "AI draft: franchise skin, philosophical core",
+        prompt:
+          "A mass-market franchise made the image famous, but the idea underneath it was already older, stranger, and intellectually harder. The clue begins with visual iconography - chrome, dust, or neon - and only later reveals that the real answer is an anxiety about memory, labour, or personhood. Name the idea.",
+        status: "Ready for host polish",
+      },
+      {
+        title: "AI draft: magazine to mythology",
+        prompt:
+          "A short story enters popular culture through a pulp channel, gets cleaned up by film and fandom, and eventually becomes a piece of common speculative vocabulary. By then, most people know the trope but not the publication ecosystem that made it travel. Identify the concept and its early publishing home.",
+        status: "Needs answer check",
+      },
+      {
+        title: "AI draft: the city is not the answer",
+        prompt:
+          "The skyline looks like the clue, but it is only camouflage. The actual answer is the fear that skyline encodes: one born from corporate scale, artificial life, and the loss of stable human identity. Name that fear, term, or conceptual framework.",
+        status: "Needs human edit",
+      },
+    ],
+  },
+  culture: {
+    label: "Culture",
+    drafts: [
+      {
+        title: "AI draft: object before movement",
+        prompt:
+          "The question begins with a single everyday object - cheap, ordinary, and seemingly beneath notice. The answer, however, is an entire cultural shift that object made visible once enough people carried it, wore it, or displayed it in public. Identify the movement or historical change.",
+        status: "Ready for host polish",
+      },
+      {
+        title: "AI draft: city, sound, slogan",
+        prompt:
+          "A city name, a rhythm pattern, and one slogan from a long-forgotten campaign appear unrelated until you realize they all belong to the same moment when culture stopped being elite and became mass repeatable experience. Name that moment or medium shift.",
+        status: "Needs human edit",
+      },
+      {
+        title: "AI draft: poster as evidence",
+        prompt:
+          "The visual clue is not there to identify an artist. It is there to date an ambition: what a region wanted to say about itself through typography, color, and public instruction. Read the poster as political evidence and identify the era or campaign.",
+        status: "Needs answer check",
+      },
     ],
   },
 };
 
-function currency(value) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value);
+const shabbirSeeds = [
+  {
+    label: "Seed 01",
+    title: "From brute force to virtue",
+    excerpt:
+      "An Arab dish travels east, gets buried under dal, spice, and ghee, and is reborn under the name of a sacred virtue rather than a ruler, ingredient, or technique.",
+  },
+  {
+    label: "Seed 02",
+    title: "Foreign company, native memory",
+    excerpt:
+      "An industrialist flies to Calcutta for sourcing, sees a market nobody is serving, builds a township, and leaves behind a four-letter brand most Indians assume was always local.",
+  },
+  {
+    label: "Seed 03",
+    title: "Rebrand by the state",
+    excerpt:
+      "A global company enters India through a long-negotiated joint venture and is forced into a last-minute Indianized rebrand that ends up making the brand stronger, not weaker.",
+  },
+];
+
+const hostTraits = [
+  "long-form build-up",
+  "India-facing business history",
+  "delayed reveal",
+  "cultural migration",
+  "brand twist",
+  "high answer payoff",
+];
+
+const themeDecks = {
+  india_brands: {
+    label: "India brands",
+    questions: [
+      {
+        title: "Township before trust",
+        prompt:
+          "He did not first sell aspiration. He first sold safety, infrastructure, and disciplined daily utility. By the time the product became ordinary Indian speech, the foreignness of the brand had almost disappeared. Which company is being described?",
+        answer: "Bata. The township model and the everyday school-shoe presence made a foreign industrial brand feel local.",
+      },
+      {
+        title: "A name made Indian overnight",
+        prompt:
+          "A late government intervention erased the global launch name and pushed a more local-facing identity into the market. Instead of damaging the rollout, it made the brand easier to absorb culturally. Which company or brand does this describe?",
+        answer: "The card points to a foreign consumer brand whose Indian launch had to be relabeled to sound more local. The twist is that localization became the growth hack.",
+      },
+      {
+        title: "Factory as public statement",
+        prompt:
+          "The plant mattered, but the housing, hospital, and sports ground mattered just as much. This was industry presented as a social world. Name the company or explain the strategy.",
+        answer: "An imported manufacturing brand using township-building as an adoption strategy, making industrial trust visible before product loyalty set in.",
+      },
+    ],
+  },
+  food_history: {
+    label: "Food history",
+    questions: [
+      {
+        title: "Imported technique, Indian identity",
+        prompt:
+          "A dish arrives through travel, but India keeps only the skeleton and rewrites the rest. What survives is not authenticity but adaptation so complete the new version sounds older than the original.",
+        answer: "The card is about culinary migration: a foreign form enters India, gets re-spiced and re-contextualized, then becomes culturally native.",
+      },
+      {
+        title: "Name chosen for a virtue",
+        prompt:
+          "The final Indian name is neither geographic nor imperial. It is ethical. Why would a cuisine rename a dish after a virtue rather than a person or ingredient?",
+        answer: "Because the renamed form signals not only taste but suitability, comfort, restraint, and a value system around eating.",
+      },
+      {
+        title: "Missing equipment, new dessert",
+        prompt:
+          "The cook lacks the original equipment and technique, so the borrowed recipe mutates until the adaptation becomes the real thing. Name the pattern rather than the dish.",
+        answer: "Constraint-led innovation: local conditions rewrite a borrowed recipe until the adaptation becomes its own tradition.",
+      },
+    ],
+  },
+  technology: {
+    label: "Technology",
+    questions: [
+      {
+        title: "The protocol under the product",
+        prompt:
+          "The device is only the bait. The actual answer sits lower in the stack, where trust or communication is standardized. What kind of question is this asking you to solve?",
+        answer: "A layered technology clue: ignore the consumer surface and identify the protocol, standard, or infrastructure logic underneath.",
+      },
+      {
+        title: "An error message with a lineage",
+        prompt:
+          "A tiny failure notice on screen hides years of browser conflict, security negotiation, and infrastructure design. Start with the symptom and name the larger technical history.",
+        answer: "The answer is the older web or network system that made the visible error possible in the first place.",
+      },
+      {
+        title: "Benchmark versus breakthrough",
+        prompt:
+          "One clue promises speed, one clue sells a myth, and one clue quietly names the real engineering milestone. Separate them and identify the breakthrough.",
+        answer: "The question rewards recognizing which technical clue is substantive and which is only marketing noise.",
+      },
+    ],
+  },
+  sci_fi: {
+    label: "Sci-Fi",
+    questions: [
+      {
+        title: "Image is camouflage",
+        prompt:
+          "The skyline or spaceship gets remembered, but the actual answer is an intellectual anxiety hiding beneath the aesthetic. What fear, concept, or philosophical problem is the question really about?",
+        answer: "Questions in this lane point past franchise recognition toward ideas like memory, personhood, corporate futurity, or identity instability.",
+      },
+      {
+        title: "Magazine before myth",
+        prompt:
+          "By the time the public learns the trope, the publishing ecosystem that carried it has already been forgotten. Name the concept and trace it backward.",
+        answer: "The correct move is to reverse-popularity: from famous trope back to pulp origin or speculative lineage.",
+      },
+      {
+        title: "The city is not the clue",
+        prompt:
+          "A futuristic urban image looks like the answer, but it is only the wrapper for a deeper concept. Solve the concept, not the scenery.",
+        answer: "The real answer is the framework or anxiety encoded by the visual world, not the visual world itself.",
+      },
+    ],
+  },
+  culture: {
+    label: "Culture",
+    questions: [
+      {
+        title: "Object to movement",
+        prompt:
+          "A mundane object becomes evidence of a bigger shift once enough people repeat it in public. What social transition does the object really reveal?",
+        answer: "The object is a clue to mass behavior, not an end in itself. The answer is the broader shift in identity, aspiration, or public culture.",
+      },
+      {
+        title: "City, slogan, sound",
+        prompt:
+          "Three mass-cultural clues converge on a moment when elite expression became repeatable everyday media. Name the shift.",
+        answer: "The answer is a medium change or public cultural turn that made repetition, memory, and identity travel faster.",
+      },
+      {
+        title: "Poster as evidence",
+        prompt:
+          "Treat the poster not as design but as political evidence. What was the city, state, or era trying to say about itself through visual instruction?",
+        answer: "The question asks you to read design as cultural intention and decode the historical campaign behind it.",
+      },
+    ],
+  },
+};
+
+function initProtection() {
+  document.addEventListener("copy", (event) => event.preventDefault());
+  document.addEventListener("cut", (event) => event.preventDefault());
+  document.addEventListener("contextmenu", (event) => event.preventDefault());
+  document.addEventListener("selectstart", (event) => {
+    if (event.target.closest(".protected")) {
+      event.preventDefault();
+    }
+  });
+  document.addEventListener("visibilitychange", () => {
+    document.body.classList.toggle("privacy-mask", document.hidden);
+  });
 }
 
-function getDifficultyCopy(level) {
-  return `${difficultyLabels[level]}: ${difficultyNotes[level]}`;
-}
-
-function rotateItems(items, generation, count) {
-  const offset = generation % items.length;
-  const doubled = [...items, ...items];
-  return doubled.slice(offset, offset + count);
-}
-
-function initQuizmasterRoute() {
-  const page = document.querySelector('[data-view="quizmasters"]');
+function initHostRoute() {
+  const page = document.querySelector('[data-view="host"]');
 
   if (!page) {
     return;
   }
 
-  const masterSelect = document.querySelector("#master-select");
-  const focusSelect = document.querySelector("#focus-select");
-  const formatSelect = document.querySelector("#master-format-select");
-  const difficultyRange = document.querySelector("#master-difficulty-range");
-  const difficultyNote = document.querySelector("#master-difficulty-note");
-  const sessionTitle = document.querySelector("#master-session-title");
-  const sessionSummary = document.querySelector("#master-session-summary");
-  const summaryTags = document.querySelector("#master-summary-tags");
-  const questionList = document.querySelector("#master-question-list");
-  const styleCard = document.querySelector("#master-style-card");
-  const royaltyCard = document.querySelector("#master-royalty-card");
-  const rewardCard = document.querySelector("#master-reward-card");
-  const creditsCard = document.querySelector("#master-credits-card");
-  const generateButton = document.querySelector("#generate-master-set");
-  const simulateButton = document.querySelector("#simulate-master-win");
+  const traitRow = document.querySelector("#host-traits");
+  const seedList = document.querySelector("#seed-list");
+  const themeSelect = document.querySelector("#host-theme-select");
+  const draftFeed = document.querySelector("#host-draft-feed");
+  const priceCard = document.querySelector("#host-price-card");
+  const payoutCard = document.querySelector("#host-payout-card");
+  const shieldCard = document.querySelector("#host-shield-card");
+  const summaryLabel = document.querySelector("#host-summary-label");
+  const generateButton = document.querySelector("#generate-host-drafts");
+  const creditsButton = document.querySelector("#simulate-host-payout");
+  let generation = 0;
+  let projectedPayout = 3200;
 
-  const state = {
-    generation: 0,
-    credits: 120,
-  };
+  traitRow.innerHTML = hostTraits.map((trait) => `<span class="pill">${trait}</span>`).join("");
+  seedList.innerHTML = shabbirSeeds
+    .map(
+      (seed) => `
+        <article class="seed-card protected" data-watermark="Temple of Curiosity / seed">
+          <div class="seed-head">
+            <span class="seed-tag">${seed.label}</span>
+            <span class="status-chip">source input</span>
+          </div>
+          <div class="seed-copy">
+            <h3>${seed.title}</h3>
+            <p>${seed.excerpt}</p>
+          </div>
+        </article>
+      `
+    )
+    .join("");
 
-  Object.entries(quizMasters).forEach(([key, master]) => {
+  Object.entries(hostThemes).forEach(([key, theme]) => {
     const option = document.createElement("option");
     option.value = key;
-    option.textContent = master.name;
-    masterSelect.appendChild(option);
+    option.textContent = theme.label;
+    themeSelect.appendChild(option);
   });
 
-  function syncFocusOptions() {
-    const master = quizMasters[masterSelect.value];
-    focusSelect.innerHTML = "";
+  function renderDrafts() {
+    const theme = hostThemes[themeSelect.value];
+    const drafts = theme.drafts.map((draft, index) => theme.drafts[(index + generation) % theme.drafts.length]);
 
-    Object.entries(master.focuses).forEach(([focusKey, focus]) => {
-      const option = document.createElement("option");
-      option.value = focusKey;
-      option.textContent = focus.label;
-      focusSelect.appendChild(option);
+    summaryLabel.textContent = `${theme.label} drafts for Shabbir's taste map`;
+    priceCard.textContent = "INR 199/month player membership";
+    payoutCard.textContent = `Projected creator payout: INR ${projectedPayout.toLocaleString("en-IN")} / 1k completions`;
+    shieldCard.textContent = "Best-effort copy shield: watermark, no select, app-switch blur";
+
+    draftFeed.innerHTML = drafts
+      .map(
+        (draft, index) => `
+          <article class="draft-card protected" data-watermark="Temple of Curiosity / member-199">
+            <div class="draft-head">
+              <span class="question-label">AI draft ${index + 1}</span>
+              <span class="status-chip">${draft.status}</span>
+            </div>
+            <div class="draft-copy">
+              <h3>${draft.title}</h3>
+              <p>${draft.prompt}</p>
+            </div>
+            <div class="summary-note">
+              <span>${theme.label}</span>
+              <span>Shabbir style engine</span>
+              <span>Human review before publish</span>
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  }
+
+  themeSelect.addEventListener("change", renderDrafts);
+  generateButton.addEventListener("click", () => {
+    generation += 1;
+    renderDrafts();
+  });
+  creditsButton.addEventListener("click", () => {
+    projectedPayout += 450;
+    renderDrafts();
+  });
+
+  themeSelect.value = "india_brands";
+  renderDrafts();
+}
+
+function initThemeRoute() {
+  const page = document.querySelector('[data-view="themes"]');
+
+  if (!page) {
+    return;
+  }
+
+  const chipRow = document.querySelector("#theme-chip-row");
+  const deckSelect = document.querySelector("#theme-deck-select");
+  const difficultyRange = document.querySelector("#theme-difficulty-range");
+  const difficultyNote = document.querySelector("#theme-difficulty-note");
+  const questionTitle = document.querySelector("#stage-question-title");
+  const questionPrompt = document.querySelector("#stage-question-prompt");
+  const questionLabel = document.querySelector("#stage-question-label");
+  const stageTheme = document.querySelector("#stage-theme");
+  const streakValue = document.querySelector("#stage-streak");
+  const creditsValue = document.querySelector("#stage-credits");
+  const answerPanel = document.querySelector("#answer-panel");
+  const answerText = document.querySelector("#answer-text");
+  const answerWhy = document.querySelector("#answer-why");
+  const revealButton = document.querySelector("#reveal-answer");
+  const nextButton = document.querySelector("#next-question");
+  const immersiveButton = document.querySelector("#toggle-immersive");
+  const shuffleButton = document.querySelector("#shuffle-theme-deck");
+  const noteCard = document.querySelector("#theme-note-card");
+  const walletCard = document.querySelector("#theme-wallet-card");
+  const shieldCard = document.querySelector("#theme-shield-card");
+  let deckKey = "india_brands";
+  let index = 0;
+  let streak = 3;
+  let credits = 180;
+
+  function renderThemeChips() {
+    chipRow.innerHTML = "";
+    Object.entries(themeDecks).forEach(([key, deck]) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `theme-chip${key === deckKey ? " is-active" : ""}`;
+      button.textContent = deck.label;
+      button.addEventListener("click", () => {
+        deckKey = key;
+        deckSelect.value = key;
+        index = 0;
+        render();
+      });
+      chipRow.appendChild(button);
     });
   }
 
-  function render() {
-    const master = quizMasters[masterSelect.value];
-    const focus = master.focuses[focusSelect.value];
-    const difficulty = Number(difficultyRange.value);
-    const rewardCredits = 40 + difficulty * 25;
-    const royaltyPerPlay = master.royaltyBase + difficulty * 0.11;
-    const archiveQuestion =
-      rotateItems(focus.archive, state.generation, 1)[0];
-    const freshQuestions = rotateItems(focus.generated, state.generation, 3);
-    const questions = [
-      {
-        source: archiveQuestion.title,
-        tag: archiveQuestion.mode,
-        prompt: archiveQuestion.prompt,
-        points: 80 + difficulty * 10,
-      },
-      ...freshQuestions.map((prompt, index) => ({
-        source: `New AI question ${index + 1}`,
-        tag: `${formatLabels[formatSelect.value]} format`,
-        prompt,
-        points: 95 + difficulty * 12 + index * 8,
-      })),
-    ];
-
-    difficultyNote.textContent = getDifficultyCopy(difficulty);
-    sessionTitle.textContent = `${master.name} on ${focus.label}`;
-    sessionSummary.textContent = `${master.style} This route keeps the curator's tone, draws from approved archive patterns, and mixes those anchors with fresh AI generation.`;
-
-    summaryTags.innerHTML = `
-      <span>${focus.label}</span>
-      <span>${formatLabels[formatSelect.value]}</span>
-      <span>${difficultyLabels[difficulty]}</span>
-      <span>1 archive echo + 3 new AI</span>
-    `;
-
-    styleCard.textContent = master.style;
-    royaltyCard.textContent = `${currency(royaltyPerPlay)} per full session`;
-    rewardCard.textContent = `${rewardCredits} credits if cleared`;
-    creditsCard.textContent = `${state.credits} credits in wallet`;
-
-    questionList.innerHTML = questions
-      .map(
-        (question) => `
-          <article class="question-card">
-            <div class="question-stack">
-              <span class="question-tag">${question.source}</span>
-              <span class="pill">${question.tag}</span>
-            </div>
-            <div class="question-copy">
-              <h3>${question.source}</h3>
-              <p>${question.prompt}</p>
-            </div>
-            <div class="question-meta">
-              <span>${focus.label}</span>
-              <strong>${question.points} pts</strong>
-            </div>
-          </article>
-        `
-      )
-      .join("");
-  }
-
-  masterSelect.addEventListener("change", () => {
-    syncFocusOptions();
-    render();
-  });
-
-  focusSelect.addEventListener("change", render);
-  formatSelect.addEventListener("change", render);
-  difficultyRange.addEventListener("input", render);
-
-  generateButton.addEventListener("click", () => {
-    state.generation += 1;
-    render();
-  });
-
-  simulateButton.addEventListener("click", () => {
-    const difficulty = Number(difficultyRange.value);
-    state.credits += 40 + difficulty * 25;
-    render();
-  });
-
-  masterSelect.value = "joy";
-  syncFocusOptions();
-  render();
-}
-
-function initTopicRoute() {
-  const page = document.querySelector('[data-view="topics"]');
-
-  if (!page) {
-    return;
-  }
-
-  const topicSelect = document.querySelector("#topic-select");
-  const formatSelect = document.querySelector("#topic-format-select");
-  const difficultyRange = document.querySelector("#topic-difficulty-range");
-  const difficultyNote = document.querySelector("#topic-difficulty-note");
-  const sessionTitle = document.querySelector("#topic-session-title");
-  const sessionSummary = document.querySelector("#topic-session-summary");
-  const summaryTags = document.querySelector("#topic-summary-tags");
-  const questionList = document.querySelector("#topic-question-list");
-  const blendCard = document.querySelector("#topic-blend-card");
-  const splitCard = document.querySelector("#topic-split-card");
-  const rewardCard = document.querySelector("#topic-reward-card");
-  const creditsCard = document.querySelector("#topic-credits-card");
-  const splitGrid = document.querySelector("#topic-split-grid");
-  const generateButton = document.querySelector("#generate-topic-set");
-  const simulateButton = document.querySelector("#simulate-topic-win");
-
-  const state = {
-    generation: 0,
-    credits: 140,
-  };
-
-  Object.entries(topicModels).forEach(([key, topic]) => {
+  Object.entries(themeDecks).forEach(([key, deck]) => {
     const option = document.createElement("option");
     option.value = key;
-    option.textContent = topic.label;
-    topicSelect.appendChild(option);
+    option.textContent = deck.label;
+    deckSelect.appendChild(option);
   });
 
   function render() {
-    const topic = topicModels[topicSelect.value];
-    const difficulty = Number(difficultyRange.value);
-    const rewardCredits = 50 + difficulty * 22;
-    const questions = rotateItems(topic.prompts, state.generation, 4);
+    const deck = themeDecks[deckKey];
+    const card = deck.questions[index % deck.questions.length];
+    const level = Number(difficultyRange.value);
 
-    difficultyNote.textContent = getDifficultyCopy(difficulty);
-    sessionTitle.textContent = `${topic.label} mixed model`;
-    sessionSummary.textContent = `This route starts from a topic and blends trained tastes instead of one curator. The result is cleaner topic coverage with a mixed editorial voice.`;
+    renderThemeChips();
+    difficultyNote.textContent = `Difficulty ${level}/5 - fast mobile rounds with longer reveals as difficulty rises.`;
+    questionLabel.textContent = `Card ${index + 1} / ${deck.questions.length}`;
+    stageTheme.textContent = deck.label;
+    questionTitle.textContent = card.title;
+    questionPrompt.textContent = card.prompt;
+    streakValue.textContent = `${streak} streak`;
+    creditsValue.textContent = `${credits} credits`;
+    answerText.textContent = card.answer;
+    answerWhy.textContent = "AI builds the card, but human editorial taste controls pacing, fairness, and final publication.";
+    answerPanel.hidden = true;
 
-    summaryTags.innerHTML = `
-      <span>${topic.label}</span>
-      <span>${formatLabels[formatSelect.value]}</span>
-      <span>${difficultyLabels[difficulty]}</span>
-      <span>Mixed model</span>
-    `;
-
-    blendCard.textContent = topic.blend.join(" + ");
-    splitCard.textContent = topic.royaltySplit;
-    rewardCard.textContent = `${rewardCredits} credits if cleared`;
-    creditsCard.textContent = `${state.credits} credits in wallet`;
-
-    splitGrid.innerHTML = topic.blend
-      .map(
-        (name, index) => `
-          <article class="split-card">
-            <strong>${name}</strong>
-            <div class="split-line">${
-              index === 0
-                ? `Primary editorial weight on ${topic.label.toLowerCase()}.`
-                : `Secondary balance layer to widen difficulty and range.`
-            }</div>
-          </article>
-        `
-      )
-      .join("");
-
-    questionList.innerHTML = questions
-      .map(
-        (prompt, index) => `
-          <article class="question-card">
-            <div class="question-stack">
-              <span class="question-tag">Mixed AI question ${index + 1}</span>
-              <span class="pill">${formatLabels[formatSelect.value]} format</span>
-            </div>
-            <div class="question-copy">
-              <h3>Topic-led prompt ${index + 1}</h3>
-              <p>${prompt}</p>
-            </div>
-            <div class="question-meta">
-              <span>${topic.label}</span>
-              <strong>${92 + difficulty * 12 + index * 8} pts</strong>
-            </div>
-          </article>
-        `
-      )
-      .join("");
+    walletCard.textContent = `INR 199/month unlocks premium rooms, creator rooms, and deeper ladders.`;
+    noteCard.textContent = "Immersive mode turns the page into a full-screen single-card flow for thumb-driven play.";
+    shieldCard.textContent = "Copy shield active: no select, watermark, and blur on app switch. This is deterrence, not absolute DRM.";
   }
 
+  deckSelect.addEventListener("change", () => {
+    deckKey = deckSelect.value;
+    index = 0;
+    render();
+  });
+
   difficultyRange.addEventListener("input", render);
-  topicSelect.addEventListener("change", render);
-  formatSelect.addEventListener("change", render);
-
-  generateButton.addEventListener("click", () => {
-    state.generation += 1;
+  revealButton.addEventListener("click", () => {
+    answerPanel.hidden = !answerPanel.hidden;
+  });
+  nextButton.addEventListener("click", () => {
+    index = (index + 1) % themeDecks[deckKey].questions.length;
+    streak += 1;
+    credits += 20 + Number(difficultyRange.value) * 4;
     render();
   });
-
-  simulateButton.addEventListener("click", () => {
-    const difficulty = Number(difficultyRange.value);
-    state.credits += 50 + difficulty * 22;
+  shuffleButton.addEventListener("click", () => {
+    index = (index + 1) % themeDecks[deckKey].questions.length;
     render();
   });
+  immersiveButton.addEventListener("click", async () => {
+    document.body.classList.toggle("is-immersive");
 
-  topicSelect.value = "technology";
+    if (document.body.classList.contains("is-immersive") && document.documentElement.requestFullscreen) {
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch (error) {
+        // Fullscreen is best-effort only.
+      }
+    } else if (!document.body.classList.contains("is-immersive") && document.fullscreenElement) {
+      try {
+        await document.exitFullscreen();
+      } catch (error) {
+        // Ignore exit failure.
+      }
+    }
+  });
+
+  deckSelect.value = deckKey;
   render();
 }
 
-initQuizmasterRoute();
-initTopicRoute();
+initProtection();
+initHostRoute();
+initThemeRoute();
